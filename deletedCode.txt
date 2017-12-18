@@ -1,0 +1,78 @@
+def parsePaper(s, n):
+
+    ballotPaper = s.split(",")
+    list1 = []
+    list2 = []
+    errorCode = ""
+
+for value in ballotPaper:
+    if (len(ballotPaper) > n):
+        errorCode = "too long"
+        list1.append([])
+        list1.append(errorCode)
+        return(list1)
+
+   
+    elif(all(parseVote(num) == 0 for num in ballotPaper)):
+        errorCode = "blank"
+        list1.append([])
+        list1.append(errorCode)
+        return(list1)
+
+        
+    elif (len(errorCode) == 0):
+        for num in ballotPaper:
+            check = parseVote(num)
+            if(check == -1):
+                errorCode = "non-digits"
+                list1.append([])
+                list1.append(errorCode)
+                return(list1)
+
+    else:
+        for number in ballotPaper:
+            list1.append(parseVote(number))
+        list2.append(list1)
+        list2.append(errorCode) #there is no error code ""
+        return(list2)
+
+def normalisePapers(ps, n):
+
+    for index in range(0, len(ps)-1):
+        p_sum = 0
+        pr = []
+
+        if(len(ps[index]) < n):
+            count_needToAdd = n - len(ps[index])
+            for i in range(0, count_needToAdd-1):
+                ps[index].append(0.0)
+
+        for num in ps[index]:
+            p_sum = p_sum + num
+
+        for number in ps[index]:
+            if(number > 0.0):
+                normVal = number / p_sum
+                pr.append(normVal)
+        ps[index] = pr
+        
+    return(ps)
+
+# need to take into effect the n parameter!! TO DO
+# eg print 4 values in array if n is 4
+def normalisePaper(p, n):
+    p_sum =  0
+    normalized = []
+
+    if(len(p) <= n):
+        for num in p:
+            p_sum = p_sum + num
+        
+    if(p_sum > 0):
+        for number in p:
+            normValue = number / p_sum
+            normalized.append(normValue)
+
+    #return normalized
+    p = normalized
+    return p
